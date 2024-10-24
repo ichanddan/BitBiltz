@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  padding: 15px 12px;
+  background-color: azure;
+  color: #000;
+}
+.swiper-button-prev::after {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.swiper-button-next::after {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+} */
+
+
+[data-selected="true"] .radio-label {
+  @apply border-2 border-red-900;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
