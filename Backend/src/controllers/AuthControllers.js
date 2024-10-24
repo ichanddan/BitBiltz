@@ -1,5 +1,7 @@
-const utils = require('../utils');``
-
+const utils = require('../utils');
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs')
+const prisma = new PrismaClient();
 module.exports = {
     /**
      * @description Register new user
@@ -8,27 +10,26 @@ module.exports = {
      */
     Register: async (req, res) => {
       try {
-        const { firstName, lastName, email, phoneNumber, password, roleId } =
+        const { fullName, email, number, password, role } =
           req.body;
         const existingUser = await prisma.user.findFirst({
           where: {
-            OR: [{ email }, { phoneNumber }],
+            OR: [{ email }, { number }],
           },
         });
   
         if (existingUser) {
-          utils.handleError(res, 400 , 'User already')
+          utils.handleError(res, 400 , 'User already registered')
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await prisma.user.create({
           data: {
-            firstName,
-            lastName,
+            fullName,
             email,
-            phoneNumber,
+            number,
             password: hashedPassword,
-            roleId,
+            role
           },
           include: {
             role: true,

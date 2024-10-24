@@ -14,7 +14,7 @@ const handleSuccess = (res, statusCode = 200, message, data = null) => {
       response.data = data;
     }
   
-    res.status(statusCode).json(response);
+    return res.status(statusCode).json(response);
   };
   
   /**
@@ -24,7 +24,7 @@ const handleSuccess = (res, statusCode = 200, message, data = null) => {
    * @param {string} message - Error message
    */
   const handleError = (res, statusCode = 400, message) => {
-    res.status(statusCode).json({
+    return res.status(statusCode).json({
       status: "error",
       message,
     });
@@ -36,7 +36,7 @@ const handleSuccess = (res, statusCode = 200, message, data = null) => {
    * @param {string} message - Error message
    */
   const handleInternalServerError = (res, message = "Internal Server Error") => {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message,
     });
