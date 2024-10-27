@@ -2,20 +2,12 @@ const express = require("express");
 const router = express.Router();
 const defaultPath = require("./DefultRoute");
 const authRoute = require("./AuthRouter");
+const { jwt } = require("../middleware");
 
-const defaultRoutes = [
-  {
-    path: '/',
-    route: defaultPath
-  },
-  {
-    path: '/auth',
-    route: authRoute
-  }
-];
+router.use("/", defaultPath);
+router.use("/auth", authRoute);
+router.use(jwt.verifyToken);
 
-defaultRoutes.forEach((route) => {
-  router.use(route.path, route.route);
-});
+
 
 module.exports = router;

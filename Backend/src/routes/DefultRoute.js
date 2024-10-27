@@ -1,8 +1,9 @@
 const express = require('express');
+const { handleSuccess } = require('../utils');
 const router = express.Router();
 
 router.get('/',(req, res) => {
-    res.status(200).json({ message: 'Hello from the Acme API!' });
+    handleSuccess(res ,200, 'OK');
 });
 
 module.exports = router;
