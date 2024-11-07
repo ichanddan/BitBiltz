@@ -4,7 +4,7 @@ const Auth = {
   sendCustomerOTP: async (email: string) => {
     let response = null;
     try {
-      response = await API.post("/email/signup-email", {
+      response = await API.post("/auth/send-otp", {
         email,
       });
     } catch (e) {
@@ -15,7 +15,7 @@ const Auth = {
   verifyCustomerOTP: async (email: string, otp: string) => {
     let response = null;
     try {
-      response = await API.post("/email/verify-signup-otp", {
+      response = await API.post("/auth/otp-verification", {
         email,
         otp,
       });
@@ -32,7 +32,7 @@ const Auth = {
   ) => {
     let response = null;
     try {
-      response = await API.post("/auth/customer/sign-up", {
+      response = await API.post("/auth/register", {
         email,
         password,
         name,
@@ -44,16 +44,16 @@ const Auth = {
     return handleResponse(response);
   },
   LoginCustomer: async ({
-    username,
+    email,
     password,
   }: {
-    username: string;
+    email: string;
     password: string;
   }) => {
     let response = null;
     try {
-      response = await API.post("/users/login", {
-        username,
+      response = await API.post("/auth/login", {
+        email,
         password,
       });
       localStorage.setItem("user", JSON.stringify(response.data.data));

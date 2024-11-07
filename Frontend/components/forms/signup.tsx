@@ -1,14 +1,13 @@
 "use client";
 import Auth from "@/api/auth";
-import { API } from "@/helper/utils";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 interface FormData {
   email: string;
   otp: string;
-  customerName: string;
+  fullName: string;
   phone: string;
   password: string;
 }
@@ -19,12 +18,13 @@ const SignUpForm = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     otp: "",
-    customerName: "",
+    fullName: "",
     phone: "",
     password: "",
   });
   const sendOTP = async () => {
     const res = await Auth.sendCustomerOTP(formData.email);
+    console.log(res);
     if (res) {
       setStep(2);
     }
@@ -40,7 +40,7 @@ const SignUpForm = () => {
     const res = await Auth.registerCustomer(
       formData.email,
       formData.password,
-      formData.customerName,
+      formData.fullName,
       formData.phone
     );
     if (res) {
@@ -108,9 +108,9 @@ const SignUpForm = () => {
           <div>
             <Input
               type="text"
-              label="Name"
-              name="customerName"
-              value={formData.customerName}
+              label="Full Name"
+              name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
               isRequired
               classNames={{

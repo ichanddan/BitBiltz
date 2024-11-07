@@ -14,11 +14,12 @@ export const API = axios.create({
 export const handleResponse = (response: any) => {
   if (response?.status === 202) toast.error(response?.data?.error);
   else if (response?.status === 500) toast.error(response?.data?.message);
-  else if (response?.status == 400) toast.error(response?.data?.error);
+  else if (response?.status === 400) toast.error(response?.data?.error);
+  else if (response?.status === 404) toast.error(response?.data?.error);
   else if (response?.status === 401) {
     Config.UNAUTHORIZED_EXCEPTION = true;
     toast.error("You are not authorized for the action.");
-  } else if (response?.status === 200) {
+  } else if (response?.status === 200 || response?.status ===201) {
     toast.success(response?.data?.message);
     return response;
   } else toast.error("Something went wrong. Please contact server admin.");

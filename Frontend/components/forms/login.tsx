@@ -3,20 +3,19 @@ import Auth from "@/api/auth";
 import { handleResponse } from "@/helper/utils";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
-import axios from "axios";
 import { LockIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 interface LoginData {
-  username: string;
+  email: string;
   password: string;
 }
 
 const LogInForm = () => {
   const router = useRouter();
   const [formData, setFormData] = useState<LoginData>({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -32,7 +31,7 @@ const LogInForm = () => {
     let res = await Auth.LoginCustomer(formData);
     res = handleResponse(res);
     if (res) {
-      localStorage.setItem("user", JSON.stringify(res.data));
+      localStorage.setItem("user", JSON.stringify(res.data.data));
       router.push("/admin");
     }
   };
@@ -42,14 +41,14 @@ const LogInForm = () => {
       <div>
         <Input
           type="email"
-          label="username"
-          name="username"
+          label="Email"
+          name="email"
           isRequired
           classNames={{
             inputWrapper: "rounded-md border",
             label: "font-semibold text-md",
           }}
-          value={formData.username}
+          value={formData.email}
           onChange={handleInputChange}
           variant="bordered"
           labelPlacement="outside"
