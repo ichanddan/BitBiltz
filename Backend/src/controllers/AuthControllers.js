@@ -28,7 +28,7 @@ module.exports = {
       const otp = GenerateOTP();
 
       const otpExpiresAt = await new Date(Date.now() + 10 * 60 * 1000);
-  
+
       console.log(otpExpiresAt);
       const newUser = await prisma.user.create({
         data: {
@@ -39,15 +39,15 @@ module.exports = {
       });
       // delete newUser.password;
       otpSend(email, otp);
-      handleSuccess(res, 201, "Otp send successfully", newUser);
+      return handleSuccess(res, 201, "Otp send successfully", newUser);
     } catch (error) {
       console.error("Register error:", error);
-      handleInternalServerError(res, error.message);
+      return handleInternalServerError(res, error.message);
     }
   },
   VerifyOTP: async (req, res) => {
     try {
-      console.log(req.body)
+      console.log(req.body);
       const { email, otp } = req.body;
 
       const cheekUser = await prisma.user.findUnique({
@@ -74,15 +74,20 @@ module.exports = {
       });
 
       // delete verifiedUser.password;
-      handleSuccess(res, 200, "User verified successfully", verifiedUser);
+      return handleSuccess(
+        res,
+        200,
+        "User verified successfully",
+        verifiedUser
+      );
     } catch (error) {
       console.error("Verify OTP error:", error);
-      handleInternalServerError(res, error.message);
+      return handleInternalServerError(res, error.message);
     }
   },
   Register: async (req, res) => {
     try {
-      const { email, password, fullName, phone , role } = req.body;
+      const { email, password, fullName, phone, role } = req.body;
 
       const cheekUser = await prisma.user.findUnique({
         where: { email: email },
@@ -97,24 +102,29 @@ module.exports = {
       // }
 
       //  has Password
-      const hashPassword = await bcrypt.hash(password, 10)
+      const hashPassword = await bcrypt.hash(password, 10);
 
       // Update user to set verified status and clear OTP
       const verifiedUser = await prisma.user.update({
         where: { id: cheekUser.id },
         data: {
           fullName,
-          number:phone,
-          password:hashPassword,
-          role
+          number: phone,
+          password: hashPassword,
+          role,
         },
       });
 
       // delete verifiedUser.password;
-      handleSuccess(res, 200, "User verified successfully", verifiedUser);
+      return handleSuccess(
+        res,
+        200,
+        "User verified successfully",
+        verifiedUser
+      );
     } catch (error) {
       console.error("Verify OTP error:", error);
-      handleInternalServerError(res, error.message);
+      return handleInternalServerError(res, error.message);
     }
   },
   Login: async (req, res) => {
@@ -125,25 +135,27 @@ module.exports = {
         where: { email },
       });
       if (!existingUser) {
-        handleError(res, 404, "User not found");
+        return handleError(res, 404, "User not found");
       }
       // Check if user password wrong
       const isValid = await bcrypt.compareSync(password, existingUser.password);
       if (!isValid) {
         handleError(res, 401, "Invalid password");
       }
+      if (existingUser.isVerified === false) {
+        return handleError(res, 401, "please verify with otp");
+      }
       const token = await generateToken(existingUser.id);
-      console.log(existingUser.id);
       const filter = {
         name: existingUser.fullName,
         email: existingUser.email,
         number: existingUser.number,
         role: existingUser.role,
-        token: token,
+        access_token: token,
       };
       handleSuccess(res, 200, "login successfully", filter);
     } catch (error) {
-      handleInternalServerError(res, error.message);
+      return handleInternalServerError(res, error.message);
     }
   },
 };
