@@ -15,13 +15,16 @@ enum Role {
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  email    String   @unique
-  fullName String
-  number   String   @unique
-  password String
-  role     Role
-  profile  Profile? @relation(fields: [id], references: [userId])
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  otp          String
+  otpExpiresAt DateTime
+  isVerified   Boolean  @default(false)
+  fullName     String?
+  number       String?  @unique
+  password     String?
+  role         Role     @default(User)
+  profile      Profile? @relation(fields: [id], references: [id])
 }
 
 model Profile {

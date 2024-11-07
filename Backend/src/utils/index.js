@@ -1,3 +1,5 @@
+const { otpSend } = require("./mailler");
+
 /**
  * Handles a successful API response
  * @param {Object} res - Express response object
@@ -46,4 +48,5 @@ const handleSuccess = (res, statusCode = 200, message, data = null) => {
     handleSuccess,
     handleError,
     handleInternalServerError,
+    otpSend
   };
