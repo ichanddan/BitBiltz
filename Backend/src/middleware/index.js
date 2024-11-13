@@ -1,5 +1,6 @@
-const jwt = require('./jwt');
+const {generateToken, verifyToken} = require('./jwt');
 
 module.exports = {
-    jwt
+    verifyToken,
+    generateToken
 }

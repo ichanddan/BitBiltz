@@ -1,51 +1,32 @@
 const { PrismaClient } = require("@prisma/client");
-const bcrypt = require("bcryptjs");
 const {
   handleSuccess,
   handleError,
   handleInternalServerError,
-  otpSend,
 } = require("../utils");
-const { generateToken } = require("../middleware");
 const prisma = new PrismaClient();
 
-const GenerateOTP = () => {
-  return Math.floor(1000 + Math.random() * 9000).toString(); // Generates a 4-digit OTP
-};
+
 module.exports = {
-  SendOtp: async (req, res) => {
+  getAccount: async (req, res) => {
     try {
-      const { email } = req.body;
-      const existingUser = await prisma.user.findFirst({
-        where: {
-          OR: [{ email }],
-        },
-      });
-
-      if (existingUser) {
-        return handleError(res, 400, "User already registered");
-      }
-      const otp = GenerateOTP();
-
-      const otpExpiresAt = await new Date(Date.now() + 10 * 60 * 1000);
-
-      console.log(otpExpiresAt);
-      const newUser = await prisma.user.create({
-        data: {
-          email,
-          otp,
-          otpExpiresAt,
-        },
-      });
-      // delete newUser.password;
-      otpSend(email, otp);
-      return handleSuccess(res, 201, "Otp send successfully", newUser);
+      const existingUser = await prisma.user.findMany();
+      const filter = existingUser.map(user =>{
+        return {
+          id: user.id,
+          name: user.fullName,
+          email: user.email,
+          number: user.number,
+          role: user.role,
+        };
+      })
+      return handleSuccess(res, 200, "All Users", filter);
     } catch (error) {
-      console.error("Register error:", error);
+      console.error("get Account error:", error);
       return handleInternalServerError(res, error.message);
     }
   },
-  VerifyOTP: async (req, res) => {
+  getProduct: async (req, res) => {
     try {
       console.log(req.body);
       const { email, otp } = req.body;

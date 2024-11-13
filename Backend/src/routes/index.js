@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const defaultPath = require("./DefultRoute");
 const authRoute = require("./AuthRouter");
-const { jwt } = require("../middleware");
+const adminRoute = require("./AdminRouter");
+const { verifyToken } = require("../middleware");
 
 router.use("/", defaultPath);
 router.use("/auth", authRoute);
-router.use(jwt.verifyToken);
+// router.use(verifyToken);
+router.use("/admin", adminRoute);
 
 
 
