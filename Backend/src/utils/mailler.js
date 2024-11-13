@@ -79,12 +79,12 @@ module.exports = {
         <body>
           <div class="container">
             <div class="header">
-              <a>Prove Your Acme Identity</a>
+              <a>Prove Your BitBiltz Identity</a>
             </div>
             <br />
             <strong>Dear User,</strong>
             <p>
-              We have received a registration request for your Acme account. For
+              We have received a registration request for your BitBiltz account. For
               security purposes, please verify your identity by providing the
               following One-Time Password (OTP).
               <br />
@@ -101,12 +101,12 @@ module.exports = {
               <strong>Do not forward or give this code to anyone.</strong>
               <br />
               <br />
-              <strong>Thank you for using Acme.</strong>
+              <strong>Thank you for using BitBiltz.</strong>
               <br />
               <br />
               Best regards,
               <br />
-              <strong>Acme</strong>
+              <strong>BitBiltz</strong>
             </p>
         
             <hr style="border: none; border-top: 0.5px solid #131111" />
@@ -114,7 +114,7 @@ module.exports = {
               <p>This email can't receive replies.</p>
               <p>
                 For more information about [App Name] and your account, visit
-                <strong>Acme</strong>
+                <strong>BitBiltz</strong>
               </p>
             </div>
           </div>
@@ -126,11 +126,11 @@ module.exports = {
               </span>
             </div>
             <div class="email-info">
-              <a href="/">Acme</a> | Pipari Rayan Bhadohi
+              <a href="/">BitBiltz</a> | Pipari Rayan Bhadohi
               | - 221401, India
             </div>
             <div class="email-info">
-              &copy; 2024 Acme. All rights
+              &copy; 2024 BitBiltz. All rights
               reserved.
             </div>
           </div>
