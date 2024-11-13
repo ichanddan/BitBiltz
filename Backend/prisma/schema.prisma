@@ -15,16 +15,17 @@ enum Role {
 }
 
 model User {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  email        String   @unique
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  email        String    @unique
   otp          String
   otpExpiresAt DateTime
-  isVerified   Boolean  @default(false)
+  isVerified   Boolean   @default(false)
   fullName     String?
-  number       String?  @unique
+  number       String?   @unique
   password     String?
-  role         Role     @default(User)
-  profile      Profile? @relation(fields: [id], references: [id])
+  role         Role      @default(User)
+  profile      Profile?  @relation(fields: [id], references: [id])
+  Product      Product[]
 }
 
 model Profile {
@@ -32,4 +33,23 @@ model Profile {
   imageUrl String // URL to the profile image
   userId   String @unique
   User     User[]
+}
+
+model Product {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  description          String
+  priceMRP             Float
+  priceSelling         Float?
+  images               String[]
+  category             String
+  sellerId             String
+  seller               User     @relation(fields: [sellerId], references: [id])
+  listingStatus        Boolean  @default(true)
+  stock                Int
+  deliveryCharge       Float
+  originCountry        String
+  manufacturingDetails String
+
+  // Other fields...
 }
